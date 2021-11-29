@@ -13,7 +13,7 @@ CC BY-SA 3.0
 
 Version
 =======
-0.1.0
+0.1.1
 
 
 Minetest Version
@@ -159,6 +159,25 @@ Loads a saved buffer into the copy buffer. When right clicked a form opens
 asking for the name of the save. A chat message is sent to the player
 stating whether the load was successful or not. Each player has their own
 saves.
+
+
+Measure
+The measure tool measures block distances and angle between to block
+positions. Lift click a node to set the measures reference position; the
+position the measurements are taken from. When a node is right clicked
+a chat message is sent to the player as:
+
+NS: n EW: n H: n A: n
+
+NS is followed by the distance from the reference position in the North/South
+(z) direction.
+EW is followed by the distance from the reference position in the East/West
+(z) direction.
+H is followed by the distance from the reference position in height (y)
+direction.
+A is followed by the angle from the reference position in degrees. 0 degrees
+is straight North. Positive degrees is rotating to the right, negative to
+the left.
 
 
 

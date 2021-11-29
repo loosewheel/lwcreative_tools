@@ -1,4 +1,4 @@
-local version = "0.1.0"
+local version = "0.1.1"
 local mod_storage = minetest.get_mod_storage ()
 
 
@@ -28,6 +28,7 @@ loadfile (modpath.."/copy_cube.lua") (utils)
 loadfile (modpath.."/copy.lua") (utils)
 loadfile (modpath.."/paste_replace.lua") (utils)
 loadfile (modpath.."/paste_fill.lua") (utils)
+loadfile (modpath.."/measure.lua") (utils)
 if utils.settings.use_storage then
 loadfile (modpath.."/save.lua") (utils)
 loadfile (modpath.."/load.lua") (utils)

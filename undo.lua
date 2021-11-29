@@ -85,7 +85,7 @@ local function place_node (pos, itemstack, placer, pointed_thing)
 				placed = pcall (def.on_place, stack, placer, pointed_thing)
 
 				if placed and def.after_place_node then
-					pcall (def.after_place_node, pt.under, placer, stack, pointed_thing)
+					pcall (def.after_place_node, pos, placer, stack, pointed_thing)
 				end
 			end
 
