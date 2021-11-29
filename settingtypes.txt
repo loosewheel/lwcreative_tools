@@ -1,0 +1,17 @@
+# Maximum block radius for circular tool actions.
+lwcreative_tools_max_block_radius (Maximum block radius) int 20
+
+# Maximum block length for linear tool actions.
+lwcreative_tools_max_block_length (Maximum block length) int 50
+
+# Maximum one side block length for copy cube.
+lwcreative_tools_max_copy_cube (Maximum copy cube) int 40
+
+# Maximum block volume for a copy operation.
+lwcreative_tools_max_copy_volume (Maximum copy volume) int 64000
+
+# Maximum undo limit remembered per player.
+lwcreative_tools_undo_limit (Maximum undo limit) int 10
+
+# Use the save and load tools.
+lwcreative_tools_use_storage (Use save/load) bool true
