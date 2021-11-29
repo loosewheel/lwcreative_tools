@@ -37,7 +37,7 @@ Copy the 'lwcreative_tools' folder to your mods folder.
 
 Bug Report
 ==========
-
+https://forum.minetest.net/viewtopic.php?f=9&t=27537
 
 
 Description
@@ -88,21 +88,21 @@ This tool replaces currently filled spaces. Replacing stops when the full
 length is placed or a node different to the one clicked is met.
 
 
-Fill
+Area Fill
 Places nodes to the given radius on the surface the player is pointing at.
 This tool fills empty spaces and replaceable nodes, such as grass. The
 space clicked must be empty to start. Filling stops when the full radius
 is placed or a node is met.
 
 
-Replace
+Area Replace
 Places nodes to the given radius in the surface the player is pointing at.
 This tool replaces nodes, whether the space is empty or not. The space
 clicked must have a node to start. Replacing stops when the full radius
 is placed or an empty space is met.
 
 
-Substitute
+Area Substitute
 Places nodes to the given radius in the surface the player is pointing at.
 This tool replaces currently filled spaces. Replacing stops when the full
 radius is placed or a node different to the one clicked is met.
