@@ -181,7 +181,7 @@ Maximum copy volume (int)
 	Default: 64000
 
 Maximum undo limit (int)
-	Maximum undo limit remembered per player.
+	Maximum undo actions remembered per player.
 	Default: 10
 
 Use save/load (bool)
