@@ -162,7 +162,7 @@ saves.
 
 
 Measure
-The measure tool measures block distances and angle between to block
+The measure tool measures block distances and angle between two block
 positions. Lift click a node to set the measures reference position; the
 position the measurements are taken from. When a node is right clicked
 a chat message is sent to the player as:
