@@ -90,7 +90,8 @@ local function place_node (pos, itemstack, placer, pointed_thing)
 			end
 
 			if not placed then
-				local param2 = get_place_param2 (stack:get_name (), vector.normalize (placer:get_look_dir ()))
+				local param2 = get_place_param2 (stack:get_name (),
+															vector.normalize (placer:get_look_dir ()))
 
 				minetest.set_node (pos, { name = stack:get_name (), param2 = param2 })
 

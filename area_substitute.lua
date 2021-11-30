@@ -2,7 +2,7 @@ local utils = ...
 
 
 
-local function substitute_node (map, x, y, action, pos, radius, item, dir, player, ptdir)
+local function substitute_node (map, x, y, action, pos, radius, item, dir, player, ptdir, square)
 	if not map[x][y].match or utils.is_protected (map[x][y].pos, player) then
 		map[x][y].match = false
 
@@ -11,7 +11,7 @@ local function substitute_node (map, x, y, action, pos, radius, item, dir, playe
 
 	local dist = vector.distance (pos, map[x][y].pos)
 
-	if dist <= radius then
+	if dist <= radius or square then
 		local pt =
 		{
 			type = "node",
@@ -26,25 +26,25 @@ local function substitute_node (map, x, y, action, pos, radius, item, dir, playe
 		map[x][y].match = false
 
 		if (x + 1) <= map.max_x then
-			if not substitute_node (map, x + 1, y, action, pos, radius, item, dir, player, ptdir) then
+			if not substitute_node (map, x + 1, y, action, pos, radius, item, dir, player, ptdir, square) then
 				return false
 			end
 		end
 
 		if (x - 1) >= map.min_x then
-			if not substitute_node (map, x - 1, y, action, pos, radius, item, dir, player, ptdir) then
+			if not substitute_node (map, x - 1, y, action, pos, radius, item, dir, player, ptdir, square) then
 				return false
 			end
 		end
 
 		if (y + 1) <= map.max_y then
-			if not substitute_node (map, x, y + 1, action, pos, radius, item, dir, player, ptdir) then
+			if not substitute_node (map, x, y + 1, action, pos, radius, item, dir, player, ptdir, square) then
 				return false
 			end
 		end
 
 		if (y - 1) >= map.min_y then
-			if not substitute_node (map, x, y - 1, action, pos, radius, item, dir, player, ptdir) then
+			if not substitute_node (map, x, y - 1, action, pos, radius, item, dir, player, ptdir, square) then
 				return false
 			end
 		end
@@ -56,17 +56,17 @@ end
 
 
 
-local function substitute (pos, item, radius, dir, player, pointed_thing)
+local function substitute (pos, item, radius, dir, player, pointed_thing, square)
 	local node = utils.get_far_node (pos)
 
 	if node then
 		local action = utils.new_action (player:get_player_name ())
 
 		if action then
-			local map = utils.map_nodes (pos, radius, dir, node.name, false)
+			local map = utils.map_nodes (pos, radius, dir, node.name, false, false, square)
 			local ptdir = vector.subtract (pointed_thing.under, pointed_thing.above)
 
-			substitute_node (map, 0, 0, action, pos, radius, item, dir, player, ptdir)
+			substitute_node (map, 0, 0, action, pos, radius, item, dir, player, ptdir, square)
 
 			utils.commit_action (action)
 		end
@@ -95,7 +95,7 @@ local function on_place (itemstack, placer, pointed_thing)
 			stack = "air"
 		end
 
-		substitute (under, stack, count, point_dir, placer, pointed_thing)
+		substitute (under, stack, count, point_dir, placer, pointed_thing, placer:get_player_control ().aux1)
 
 		minetest.log ("action", string.format ("lwcreative_tools area substitute by %s with %s at %s, radius %d",
 															placer:get_player_name (),
@@ -120,6 +120,7 @@ minetest.register_craftitem ("lwcreative_tools:substitute", {
 	inventory_image = "lwcreative_tools_substitute.png",
 	wield_image = "lwcreative_tools_substitute.png",
 	stack_max = utils.settings.max_block_radius,
+	liquids_pointable = true,
 	on_place = on_place,
 	on_use = on_use,
 })

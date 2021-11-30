@@ -92,20 +92,24 @@ Area Fill
 Places nodes to the given radius on the surface the player is pointing at.
 This tool fills empty spaces and replaceable nodes, such as grass. The
 space clicked must be empty to start. Filling stops when the full radius
-is placed or a node is met.
+is placed or a node is met. If the aux key is held while placing a square
+area is affected (side = radius * 2 + 1).
+
 
 
 Area Replace
 Places nodes to the given radius in the surface the player is pointing at.
 This tool replaces nodes, whether the space is empty or not. The space
 clicked must have a node to start. Replacing stops when the full radius
-is placed or an empty space is met.
+is placed or an empty space is met. If the aux key is held while placing
+a square area is affected (side = radius * 2 + 1).
 
 
 Area Substitute
 Places nodes to the given radius in the surface the player is pointing at.
 This tool replaces currently filled spaces. Replacing stops when the full
-radius is placed or a node different to the one clicked is met.
+radius is placed or a node different to the one clicked is met. If the aux
+key is held while placing a square area is affected (side = radius * 2 + 1).
 
 
 Copy Cube
@@ -167,7 +171,7 @@ positions. Lift click a node to set the measures reference position; the
 position the measurements are taken from. When a node is right clicked
 a chat message is sent to the player as:
 
-NS: n EW: n H: n A: n
+NS: n EW: n H: n A: f.f L f.f
 
 NS is followed by the distance from the reference position in the North/South
 (z) direction.
@@ -178,6 +182,7 @@ direction.
 A is followed by the angle from the reference position in degrees. 0 degrees
 is straight North. Positive degrees is rotating to the right, negative to
 the left.
+L is the length of direct line from the reference position.
 
 
 

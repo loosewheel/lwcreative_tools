@@ -30,6 +30,28 @@ end
 
 
 
+function utils.player_message (player, msg)
+	local name = nil
+
+	if type (player) == "string" then
+		name = player
+	elseif player and player:is_player () then
+		name = player:get_player_name ()
+	else
+		return
+	end
+
+	minetest.chat_send_player (name, tostring (msg))
+end
+
+
+
+function utils.player_error_message (player, msg)
+	utils.player_message (player, minetest.colorize ("#FF0000FF", tostring (msg)))
+end
+
+
+
 function utils.get_far_node (pos)
 	local node = minetest.get_node (pos)
 
@@ -60,7 +82,7 @@ function utils.is_creative (player)
 			return true
 		end
 
-		minetest.chat_send_player (player:get_player_name (), "Must be in creative mode to use this tool.")
+		utils.player_error_message (player, "Must be in creative mode to use this tool.")
 	end
 
 	return false
@@ -84,7 +106,7 @@ function utils.check_privs (player)
 			return true
 		end
 
-		minetest.chat_send_player (name, "Privilege lwcreative_tools required to use this tool.")
+		utils.player_error_message (name, "Privilege lwcreative_tools required to use this tool.")
 	end
 
 	return false
@@ -139,19 +161,21 @@ end
 
 
 
-function utils.map_nodes (pos, radius, dir, match_node_name, buildable_to)
-	local map = { min_x = (radius * -2), max_x = (radius * 2),
-					  min_y = (radius * -2), max_y = (radius * 2) }
+function utils.map_nodes (pos, radius, dir, match_node_name, buildable_to, liquid, square)
+	local extend = (square and radius) or (radius + 1)
+	local map = { min_x = -extend, max_x = extend,
+					  min_y = -extend, max_y = extend }
 
-	for x = (radius * -2), (radius * 2), 1 do
+	for x = -extend, extend, 1 do
 		map[x] = { }
 
-		for y = (radius * -2), (radius * 2), 1 do
+		for y = -extend, extend, 1 do
 			local node_pos = vector.add (pos, utils.rotate_to_dir ({ x = x, y = y, z = 0 }, dir))
 			local node = utils.get_far_node (node_pos)
 			local def = (node and utils.find_item_def (node.name)) or nil
 			local match = (node and node.name == match_node_name) or
-							  (buildable_to and def and def.buildable_to)
+							  (def and ((buildable_to and def.buildable_to) or
+											(liquid and def.liquidtype ~= "none")))
 
 			map[x][y] = { match = match, pos = node_pos }
 		end
@@ -477,7 +501,7 @@ function utils.get_place_stats (player, pointed_thing)
 				return nil
 			end
 
-			if def.buildable_to then
+			if def.buildable_to and def.liquidtype == "none" then
 				above = under
 				under = vector.add (under, point_dir)
 				node = utils.get_far_node (under)

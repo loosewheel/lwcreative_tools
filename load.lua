@@ -64,11 +64,9 @@ minetest.register_on_player_receive_fields (function (player, formname, fields)
 
 		if fields.load and type (fields.map_name) == "string" and fields.map_name:len () > 0 then
 			if utils.load_player_map (player, fields.map_name) then
-				minetest.chat_send_player (player:get_player_name (),
-													string.format ("Copy buffer loaded from %s", fields.map_name))
+				utils.player_message (player, string.format ("Copy buffer loaded from %s", fields.map_name))
 			else
-				minetest.chat_send_player (player:get_player_name (),
-													string.format ("An error occurred loading %s!", fields.map_name))
+				utils.player_error_message (player, string.format ("An error occurred loading %s!", fields.map_name))
 			end
 		end
 

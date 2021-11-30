@@ -26,15 +26,16 @@ local function on_place (itemstack, placer, pointed_thing)
 				local center = minetest.string_to_pos (meta:get_string ("center"))
 				local rot = vector.dir_to_rotation (vector.direction (center, under))
 
-				minetest.chat_send_player (placer:get_player_name (),
-									string.format ("NS: %d EW: %d  H: %d  A: %d",
-														math.floor (under.z - center.z),
-														math.floor (under.x - center.x),
-														math.floor (under.y - center.y),
-														rot.y * -180 / math.pi))
+				utils.player_message (placer,
+											 string.format ("NS: %d EW: %d  H: %d A: %0.1f  L: %0.1f",
+																 math.floor (under.z - center.z),
+																 math.floor (under.x - center.x),
+																 math.floor (under.y - center.y),
+																 rot.y * -180 / math.pi,
+																 vector.distance (center, under)))
 			end
 		else
-			minetest.chat_send_player (placer:get_player_name (), "Measure reference not set!")
+			utils.player_error_message (placer, "Measure reference not set!")
 		end
 	end
 
@@ -58,9 +59,8 @@ local function on_use (itemstack, user, pointed_thing)
 		meta:set_string ("center", minetest.pos_to_string (pointed_thing.under, 0))
 		meta:set_int ("phase", 1)
 
-		minetest.chat_send_player (user:get_player_name (),
-											string.format ("Set measure reference to %s",
-																minetest.pos_to_string (pointed_thing.under, 0)))
+		utils.player_message (user, string.format ("Set measure reference to %s",
+																 minetest.pos_to_string (pointed_thing.under, 0)))
 	end
 
 	return itemstack

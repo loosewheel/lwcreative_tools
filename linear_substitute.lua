@@ -89,6 +89,7 @@ minetest.register_craftitem ("lwcreative_tools:linear_substitute", {
 	inventory_image = "lwcreative_tools_linear_substitute.png",
 	wield_image = "lwcreative_tools_linear_substitute.png",
 	stack_max = utils.settings.max_block_length,
+	liquids_pointable = true,
 	on_place = on_place,
 	on_use = on_use,
 })

@@ -35,7 +35,7 @@ local function on_place (itemstack, placer, pointed_thing)
 				if (math.abs (pos2.x - pos1.x) * math.abs (pos2.y - pos1.y) *
 					 math.abs (pos2.z - pos1.z)) > utils.settings.max_copy_volume then
 
-					minetest.chat_send_player (placer:get_player_name (), "Volume to large to copy! Copy cancelled.")
+					utils.player_error_message (placer, "Volume to large to copy! Copy cancelled.")
 					meta:set_int ("phase", 0)
 
 					return itemstack
@@ -54,10 +54,9 @@ local function on_place (itemstack, placer, pointed_thing)
 				meta:set_int ("phase", 0)
 
 				if utils.set_player_copy_buffer (placer, pos1, pos2, param2) then
-					minetest.chat_send_player (placer:get_player_name (),
-														string.format ("Copied %s to %s",
-																			minetest.pos_to_string (pos1, 0),
-																			minetest.pos_to_string (pos2, 0)))
+					utils.player_message (placer, string.format ("Copied %s to %s",
+																				minetest.pos_to_string (pos1, 0),
+																				minetest.pos_to_string (pos2, 0)))
 
 					minetest.log ("action", string.format ("lwcreative_tools copy by %s, %s to %s",
 																		placer:get_player_name (),
@@ -78,9 +77,8 @@ local function on_place (itemstack, placer, pointed_thing)
 				meta:set_string ("pos1", minetest.pos_to_string (under, 0))
 				meta:set_int ("phase", 1)
 
-				minetest.chat_send_player (placer:get_player_name (),
-													string.format ("Set first position of copy %s",
-																		minetest.pos_to_string (under, 0)))
+				utils.player_message (placer, string.format ("Set first position of copy %s",
+																			minetest.pos_to_string (under, 0)))
 			end
 		end
 

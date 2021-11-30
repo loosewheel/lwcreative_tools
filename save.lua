@@ -19,7 +19,7 @@ local function on_secondary_use (itemstack, placer, pointed_thing)
 		minetest.show_formspec (placer:get_player_name (), "lwcreative_tools:save", spec)
 
 	elseif placer and placer:is_player () then
-		minetest.chat_send_player (placer:get_player_name (), "No copy buffer!")
+		utils.player_error_message (placer, "No copy buffer!")
 
 	end
 
@@ -67,15 +67,13 @@ minetest.register_craftitem ("lwcreative_tools:save", {
 
 local function save_map (player, map_name)
 	if utils.save_player_map (player, map_name) then
-		minetest.chat_send_player (player:get_player_name (),
-											string.format ("Copy buffer saved as %s", map_name))
+		utils.player_message (player, string.format ("Copy buffer saved as %s", map_name))
 
 		minetest.log ("action", string.format ("lwcreative_tools %s saved by %s",
 															map_name,
 															player:get_player_name ()))
 	else
-		minetest.chat_send_player (player:get_player_name (),
-											string.format ("An error occurred saving %s!", map_name))
+		utils.player_error_message (player, string.format ("An error occurred saving %s!", map_name))
 	end
 end
 

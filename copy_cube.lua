@@ -25,10 +25,9 @@ local function on_place (itemstack, placer, pointed_thing)
 														look_dir))
 
 		if utils.set_player_copy_buffer (placer, under, pos2, param2) then
-			minetest.chat_send_player (placer:get_player_name (),
-												string.format ("Copied %s to %s",
-																	minetest.pos_to_string (under, 0),
-																	minetest.pos_to_string (pos2, 0)))
+			utils.player_message (placer, string.format ("Copied %s to %s",
+																		minetest.pos_to_string (under, 0),
+																		minetest.pos_to_string (pos2, 0)))
 
 			minetest.log ("action", string.format ("lwcreative_tools copy by %s, %s to %s",
 																placer:get_player_name (),

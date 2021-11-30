@@ -2,7 +2,7 @@ local utils = ...
 
 
 
-local function fill_node (map, x, y, action, pos, radius, item, dir, player, ptdir)
+local function fill_node (map, x, y, action, pos, radius, item, dir, player, ptdir, square)
 	if not map[x][y].match or utils.is_protected (map[x][y].pos, player) then
 		map[x][y].match = false
 
@@ -11,12 +11,12 @@ local function fill_node (map, x, y, action, pos, radius, item, dir, player, ptd
 
 	local dist = vector.distance (pos, map[x][y].pos)
 
-	if dist <= radius then
+	if dist <= radius or square then
 		local under_pos = vector.add (map[x][y].pos, utils.rotate_to_dir ({ x = 0, y = 0, z = 1 }, dir))
 		local node = utils.get_far_node (under_pos)
 		local def = (node and utils.find_item_def (node.name)) or nil
 
-		if (node and node.name ~= "air") and (def and def.walkable) then
+		if (node and node.name ~= "air") and (def and (def.walkable or def.liquidtype ~= "none")) then
 			local pt =
 			{
 				type = "node",
@@ -31,25 +31,25 @@ local function fill_node (map, x, y, action, pos, radius, item, dir, player, ptd
 			map[x][y].match = false
 
 			if (x + 1) <= map.max_x then
-				if not fill_node (map, x + 1, y, action, pos, radius, item, dir, player, ptdir) then
+				if not fill_node (map, x + 1, y, action, pos, radius, item, dir, player, ptdir, square) then
 					return false
 				end
 			end
 
 			if (x - 1) >= map.min_x then
-				if not fill_node (map, x - 1, y, action, pos, radius, item, dir, player, ptdir) then
+				if not fill_node (map, x - 1, y, action, pos, radius, item, dir, player, ptdir, square) then
 					return false
 				end
 			end
 
 			if (y + 1) <= map.max_y then
-				if not fill_node (map, x, y + 1, action, pos, radius, item, dir, player, ptdir) then
+				if not fill_node (map, x, y + 1, action, pos, radius, item, dir, player, ptdir, square) then
 					return false
 				end
 			end
 
 			if (y - 1) >= map.min_y then
-				if not fill_node (map, x, y - 1, action, pos, radius, item, dir, player, ptdir) then
+				if not fill_node (map, x, y - 1, action, pos, radius, item, dir, player, ptdir, square) then
 					return false
 				end
 			end
@@ -62,14 +62,14 @@ end
 
 
 
-local function fill (pos, item, radius, dir, player, pointed_thing)
+local function fill (pos, item, radius, dir, player, pointed_thing, square)
 	local action = utils.new_action (player:get_player_name ())
 
 	if action then
-		local map = utils.map_nodes (pos, radius, dir, "air", true)
+		local map = utils.map_nodes (pos, radius, dir, "air", true, true, square)
 		local ptdir = vector.subtract (pointed_thing.under, pointed_thing.above)
 
-		fill_node (map, 0, 0, action, pos, radius, item, dir, player, ptdir)
+		fill_node (map, 0, 0, action, pos, radius, item, dir, player, ptdir, square)
 
 		utils.commit_action (action)
 	end
@@ -97,7 +97,7 @@ local function on_place (itemstack, placer, pointed_thing)
 			stack = "air"
 		end
 
-		fill (above, stack, count, point_dir, placer, pointed_thing)
+		fill (above, stack, count, point_dir, placer, pointed_thing, placer:get_player_control ().aux1)
 
 		minetest.log ("action", string.format ("lwcreative_tools area fill by %s with %s at %s, radius %d",
 															placer:get_player_name (),
@@ -122,6 +122,7 @@ minetest.register_craftitem ("lwcreative_tools:fill", {
 	inventory_image = "lwcreative_tools_fill.png",
 	wield_image = "lwcreative_tools_fill.png",
 	stack_max = utils.settings.max_block_radius,
+	liquids_pointable = true,
 	on_place = on_place,
 	on_use = on_use,
 })

@@ -62,7 +62,7 @@ local function on_place (itemstack, placer, pointed_thing)
 																	placer:get_player_name (),
 																	minetest.pos_to_string (under, 0)))
 			else
-				minetest.chat_send_player (placer:get_player_name (), "No copy buffer!")
+				utils.player_error_message (placer, "No copy buffer!")
 			end
 		end
 	end
