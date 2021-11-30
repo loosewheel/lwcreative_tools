@@ -172,7 +172,7 @@ NS: n EW: n H: n A: n
 NS is followed by the distance from the reference position in the North/South
 (z) direction.
 EW is followed by the distance from the reference position in the East/West
-(z) direction.
+(x) direction.
 H is followed by the distance from the reference position in height (y)
 direction.
 A is followed by the angle from the reference position in degrees. 0 degrees
