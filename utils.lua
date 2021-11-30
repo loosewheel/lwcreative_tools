@@ -290,16 +290,38 @@ end
 
 
 
-function utils.save_map (player, map_name, map)
+function utils.save_map_exists (player, map_name)
 	if type (map_name) == "string" and player and player:is_player () then
 		local maps_folder = utils.saved_maps_folder (player:get_player_name ())
 
 		if maps_folder then
 			local map_file = maps_folder.."/"..for_file_path (map_name)
+			local file = io.open (map_file, "r")
+
+			if file then
+				file:close ()
+
+				return true
+			end
+		end
+	end
+
+	return false
+end
+
+
+
+function utils.save_map (player, map_name, map)
+	if type (map_name) == "string" and player and player:is_player () then
+		local maps_folder = utils.saved_maps_folder (player:get_player_name ())
+		local success, result = pcall (minetest.serialize, map)
+
+		if maps_folder and success and result then
+			local map_file = maps_folder.."/"..for_file_path (map_name)
 			local file = io.open (map_file, "w")
 
 			if file then
-				file:write (minetest.serialize (map))
+				file:write (result)
 
 				file:close ()
 
@@ -327,7 +349,11 @@ function utils.load_map (player, map_name)
 				local contents = file:read ("*a")
 
 				if contents then
-					map = minetest.deserialize (contents)
+					local success, result = pcall (minetest.deserialize, contents)
+
+					if success then
+						map = result
+					end
 				end
 
 				file:close ()
@@ -391,6 +417,18 @@ function utils.get_node_data (pos)
 					end
 
 					meta_table = meta:to_table ()
+
+					if meta_table and meta_table.inventory then
+						for list, inv in pairs (meta_table.inventory) do
+							if type (inv) == "table" then
+								for slot, item in pairs (inv) do
+									if type (item) == "userdata" then
+										inv[slot] = item:to_string ()
+									end
+								end
+							end
+						end
+					end
 				end
 
 				local items = minetest.get_node_drops (node, nil)

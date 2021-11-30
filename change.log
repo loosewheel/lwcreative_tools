@@ -6,3 +6,8 @@ v 0.1.0
 v0.1.1
 *	Added measure tool.
 *	Fixed bug in undo module (place_node).
+
+
+v0.1.2
+*	Fixed bug when trying to save copy buffer that contains inventories.
+*	Added confirmation before overwrite save.

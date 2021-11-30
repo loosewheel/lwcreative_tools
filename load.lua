@@ -12,7 +12,7 @@ local function on_secondary_use (itemstack, placer, pointed_thing)
 	local spec =
 	"formspec_version[3]"..
 	"size[7.0,4.3,false]"..
-	"field[1.0,1.0;5.0,0.8;map_name;Open;]\n"..
+	"field[1.0,1.5;5.0,0.8;map_name;Open;]\n"..
 	"button_exit[2.25,2.5;2.5,0.8;load;Load]"
 
 	minetest.show_formspec (placer:get_player_name (), "lwcreative_tools:load", spec)
@@ -68,7 +68,7 @@ minetest.register_on_player_receive_fields (function (player, formname, fields)
 													string.format ("Copy buffer loaded from %s", fields.map_name))
 			else
 				minetest.chat_send_player (player:get_player_name (),
-													string.format ("An error occurred loading %s", fields.map_name))
+													string.format ("An error occurred loading %s!", fields.map_name))
 			end
 		end
 
