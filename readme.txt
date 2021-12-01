@@ -96,7 +96,6 @@ is placed or a node is met. If the aux key is held while placing a square
 area is affected (side = radius * 2 + 1).
 
 
-
 Area Replace
 Places nodes to the given radius in the surface the player is pointing at.
 This tool replaces nodes, whether the space is empty or not. The space
