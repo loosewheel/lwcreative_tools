@@ -6,7 +6,7 @@ local function on_place (itemstack, placer, pointed_thing)
 	if not utils.is_creative (placer) or
 		not utils.check_privs (placer) then
 
-		return nil
+		return itemstack
 	end
 
 	local meta = itemstack:get_meta ()

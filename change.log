@@ -18,3 +18,7 @@ v0.1.3
 *	Made placement tools work with liquids.
 *	Added optional square fill to area tools (hold aux key while placing).
 *	Changed measure tool angle to display 1 decimal place.
+
+
+v0.1.4
+*	Fixed not returning itemstack from on_place properly.

@@ -40,7 +40,7 @@ local function on_place (itemstack, placer, pointed_thing)
 	if not utils.is_creative (placer) or
 		not utils.check_privs (placer) then
 
-		return nil
+		return itemstack
 	end
 
 	local stack, count = utils.get_item_stats (itemstack, placer)
@@ -64,6 +64,8 @@ local function on_place (itemstack, placer, pointed_thing)
 															minetest.pos_to_string (above, 0),
 															count + 1))
 	end
+
+	return itemstack
 end
 
 

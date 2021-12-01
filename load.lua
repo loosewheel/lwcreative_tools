@@ -6,7 +6,7 @@ local function on_secondary_use (itemstack, placer, pointed_thing)
 	if not utils.is_creative (placer) or
 		not utils.check_privs (placer) then
 
-		return nil
+		return itemstack
 	end
 
 	local spec =
@@ -26,7 +26,7 @@ local function on_place (itemstack, placer, pointed_thing)
 	if not utils.is_creative (placer) or
 		not utils.check_privs (placer) then
 
-		return nil
+		return itemstack
 	end
 
 	local on_rightclick = utils.get_on_rightclick (pointed_thing.under, placer)
