@@ -16,15 +16,15 @@ end
 
 
 
--- check for lwdrops
-if minetest.global_exists ("lwdrops") then
-	utils.lwdrops_supported = true
-	utils.on_destroy = lwdrops.on_destroy
-else
-	utils.lwdrops_supported = false
+function utils.on_destroy (itemstack)
+	local stack = ItemStack (itemstack)
 
-	-- dummy
-	utils.on_destroy = function (itemstack)
+	if stack and stack:get_count () > 0 then
+		local def = utils.find_item_def (stack:get_name ())
+
+		if def and def.on_destroy then
+			def.on_destroy (stack)
+		end
 	end
 end
 

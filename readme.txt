@@ -13,7 +13,7 @@ CC BY-SA 3.0
 
 Version
 =======
-0.1.4
+0.1.5
 
 
 Minetest Version
@@ -27,7 +27,6 @@ Dependencies
 
 Optional Dependencies
 =====================
-lwdrops
 
 
 Installation
