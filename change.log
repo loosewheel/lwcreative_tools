@@ -26,3 +26,9 @@ v0.1.4
 
 v0.1.5
 *	Removed optional dependency lwdrops.
+
+
+v0.1.6
+*	Limited area replace and area substitute to only nodes that are on a
+	surface.
+*	Undo undoes if node is inundated with liquid.

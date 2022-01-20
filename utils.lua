@@ -173,9 +173,17 @@ function utils.map_nodes (pos, radius, dir, match_node_name, buildable_to, liqui
 			local node_pos = vector.add (pos, utils.rotate_to_dir ({ x = x, y = y, z = 0 }, dir))
 			local node = utils.get_far_node (node_pos)
 			local def = (node and utils.find_item_def (node.name)) or nil
-			local match = (node and node.name == match_node_name) or
-							  (def and ((buildable_to and def.buildable_to) or
-											(liquid and def.liquidtype ~= "none")))
+			local match = false
+
+			if match_node_name then
+				match = (node and node.name == match_node_name) or
+						  (def and ((buildable_to and def.buildable_to) or
+										(liquid and def.liquidtype ~= "none")))
+			else
+				match = (node and node.name ~= "air") or
+						  (def and ((buildable_to and def.buildable_to) or
+										(liquid and def.liquidtype ~= "none")))
+			end
 
 			map[x][y] = { match = match, pos = node_pos }
 		end

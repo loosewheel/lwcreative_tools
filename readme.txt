@@ -13,7 +13,7 @@ CC BY-SA 3.0
 
 Version
 =======
-0.1.5
+0.1.6
 
 
 Minetest Version
@@ -99,15 +99,17 @@ Area Replace
 Places nodes to the given radius in the surface the player is pointing at.
 This tool replaces nodes, whether the space is empty or not. The space
 clicked must have a node to start. Replacing stops when the full radius
-is placed or an empty space is met. If the aux key is held while placing
-a square area is affected (side = radius * 2 + 1).
+is placed, an empty space is met or the node is not on the surface. If
+the aux key is held while placing a square area is affected
+(side = radius * 2 + 1).
 
 
 Area Substitute
 Places nodes to the given radius in the surface the player is pointing at.
 This tool replaces currently filled spaces. Replacing stops when the full
-radius is placed or a node different to the one clicked is met. If the aux
-key is held while placing a square area is affected (side = radius * 2 + 1).
+radius is placed, a node different to the one clicked is met or the node
+is not on the surface. If the aux key is held while placing a square area
+is affected (side = radius * 2 + 1).
 
 
 Copy Cube

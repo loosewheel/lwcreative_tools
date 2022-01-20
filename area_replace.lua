@@ -2,39 +2,82 @@ local utils = ...
 
 
 
-local function replace (pos, item, radius, dir, player, pointed_thing, square)
-	local action = utils.new_action (player:get_player_name ())
-	local ptdir = vector.subtract (pointed_thing.under, pointed_thing.above)
+local function replace_node (map, x, y, action, pos, radius, item, dir, player, ptdir, square)
+	if not map[x][y].match or utils.is_protected (map[x][y].pos, player) then
+		map[x][y].match = false
 
-	if action then
-		local extend = (square and radius) or (radius + 1)
+		return true
+	end
 
-		for x = -extend, extend, 1 do
-			for y = -extend, extend, 1 do
-				local node_pos = vector.add (pos, utils.rotate_to_dir ({ x = x, y = y, z = 0 }, dir))
-				local dist = vector.distance (pos, node_pos)
+	local dist = vector.distance (pos, map[x][y].pos)
 
-				if (dist <= radius or square) and not utils.is_protected (node_pos, player) then
-					local node = utils.get_far_node (node_pos)
-					local def = (node and utils.find_item_def (node.name)) or nil
+	if dist <= radius or square then
+		local under_pos = vector.add (map[x][y].pos, utils.rotate_to_dir ({ x = 0, y = 0, z = 0 }, dir))
+		local above_pos = vector.subtract (under_pos, dir)
+		local above_node = utils.get_far_node (above_pos)
+		local above_def = (above_node and utils.find_item_def (above_node.name)) or nil
 
-					if (node and node.name ~= "air") and (def and (def.walkable or def.liquidtype ~= "none")) then
-						local pt =
-						{
-							type = "node",
-							under = vector.new (node_pos),
-							above = vector.subtract (node_pos, ptdir)
-						}
+		-- limit to open space before surface
+		if (above_node and above_node.name == "air") or
+			(above_def and (not above_def.walkable or above_def.liquidtype ~= "none")) then
 
-						if not action:place_node (node_pos, item, player, pt) then
-							utils.commit_action (action)
+			local node = utils.get_far_node (under_pos)
+			local def = (node and utils.find_item_def (node.name)) or nil
 
-							return
-						end
+			if (node and node.name ~= "air") and (def and (def.walkable or def.liquidtype ~= "none")) then
+				local pt =
+				{
+					type = "node",
+					under = vector.new (map[x][y].pos),
+					above = vector.subtract (map[x][y].pos, ptdir)
+				}
+
+				if not action:place_node (map[x][y].pos, item, player, pt) then
+					return false
+				end
+
+				map[x][y].match = false
+
+				if (x + 1) <= map.max_x then
+					if not replace_node (map, x + 1, y, action, pos, radius, item, dir, player, ptdir, square) then
+						return false
+					end
+				end
+
+				if (x - 1) >= map.min_x then
+					if not replace_node (map, x - 1, y, action, pos, radius, item, dir, player, ptdir, square) then
+						return false
+					end
+				end
+
+				if (y + 1) <= map.max_y then
+					if not replace_node (map, x, y + 1, action, pos, radius, item, dir, player, ptdir, square) then
+						return false
+					end
+				end
+
+				if (y - 1) >= map.min_y then
+					if not replace_node (map, x, y - 1, action, pos, radius, item, dir, player, ptdir, square) then
+						return false
 					end
 				end
 			end
 		end
+	end
+
+	return true
+end
+
+
+
+local function replace (pos, item, radius, dir, player, pointed_thing, square)
+	local action = utils.new_action (player:get_player_name ())
+
+	if action then
+		local map = utils.map_nodes (pos, radius, dir, nil, true, false, square)
+		local ptdir = vector.subtract (pointed_thing.under, pointed_thing.above)
+
+		replace_node (map, 0, 0, action, pos, radius, item, dir, player, ptdir, square)
 
 		utils.commit_action (action)
 	end

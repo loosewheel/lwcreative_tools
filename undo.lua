@@ -372,8 +372,11 @@ function undo:undo (player_name)
 		if buffer then
 			for i = #buffer, 1, -1 do
 				local node = utils.get_far_node (buffer[i].pos)
+				local def = (node and utils.find_item_def (node.name)) or nil
 
-				if node and node.name == buffer[i].placed.node.name then
+				if (node and node.name == buffer[i].placed.node.name) or
+					(def and def.liquidtype ~= "none") then
+
 					remove_node (buffer[i].pos)
 					restore_node (buffer[i].pos, buffer[i].removed)
 					destroy_buffer_drops (buffer[i])
