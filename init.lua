@@ -1,5 +1,4 @@
-local version = "0.1.6"
-local mod_storage = minetest.get_mod_storage ()
+local version = "0.1.7"
 
 
 
