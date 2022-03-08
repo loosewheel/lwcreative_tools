@@ -10,7 +10,7 @@ local function on_place (itemstack, placer, pointed_thing)
 	end
 
 	local count = itemstack:get_count ()
-	local look_dir, point_dir, under, above = utils.get_place_stats (placer, pointed_thing)
+	local look_dir, _, under = utils.get_place_stats (placer, pointed_thing)
 	local param2 = minetest.dir_to_facedir (vector.normalize (placer:get_look_dir ()))
 
 	if count and look_dir then

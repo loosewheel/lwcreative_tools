@@ -15,7 +15,7 @@ local function on_place (itemstack, placer, pointed_thing)
 		local phase = meta:get_int ("phase")
 
 		if phase == 1 then
-			local look_dir, point_dir, under, above = utils.get_place_stats (placer, pointed_thing)
+			local look_dir, _, under = utils.get_place_stats (placer, pointed_thing)
 
 			if look_dir then
 				local on_rightclick = utils.get_on_rightclick (under, placer)

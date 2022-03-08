@@ -1,6 +1,6 @@
 local utils = ...
 
-local count = 0
+
 
 function paste_fill (pos, map, dir, player, param2)
 	local action = utils.new_action (player:get_player_name ())
@@ -42,7 +42,7 @@ local function on_place (itemstack, placer, pointed_thing)
 	end
 
 	local count = itemstack:get_count ()
-	local look_dir, point_dir, under, above = utils.get_place_stats (placer, pointed_thing)
+	local look_dir, _, under, above = utils.get_place_stats (placer, pointed_thing)
 
 	if look_dir.x ~= 0 or look_dir.z ~= 0 then
 		look_dir.y = 0

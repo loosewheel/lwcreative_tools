@@ -31,7 +31,7 @@ end
 
 
 function utils.player_message (player, msg)
-	local name = nil
+	local name
 
 	if type (player) == "string" then
 		name = player
@@ -173,7 +173,7 @@ function utils.map_nodes (pos, radius, dir, match_node_name, buildable_to, liqui
 			local node_pos = vector.add (pos, utils.rotate_to_dir ({ x = x, y = y, z = 0 }, dir))
 			local node = utils.get_far_node (node_pos)
 			local def = (node and utils.find_item_def (node.name)) or nil
-			local match = false
+			local match
 
 			if match_node_name then
 				match = (node and node.name == match_node_name) or
@@ -195,7 +195,7 @@ end
 
 
 function utils.copy_section (pos1, pos2, param2)
-	local map = nil
+	local map
 
 	if param2 == 3 or param2 == 1 then
 		local incx = (pos2.z < pos1.z and -1) or 1
@@ -570,7 +570,6 @@ function utils.on_use (itemstack, user, pointed_thing, limit)
 
 		if meta and def then
 			local count = itemstack:get_count ()
-			local item_name = def.description
 
 			if user:get_player_control ().sneak then
 				if user:get_player_control ().aux1 then

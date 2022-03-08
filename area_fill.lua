@@ -84,7 +84,7 @@ local function on_place (itemstack, placer, pointed_thing)
 	end
 
 	local stack, count = utils.get_item_stats (itemstack, placer)
-	local look_dir, point_dir, under, above, param2 = utils.get_place_stats (placer, pointed_thing)
+	local look_dir, point_dir, under, above = utils.get_place_stats (placer, pointed_thing)
 
 	if count and look_dir then
 		local on_rightclick = utils.get_on_rightclick (under, placer)
